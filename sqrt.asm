@@ -1,33 +1,30 @@
-section .text
-
-global _start
-
-%macro _pushd 0
-    push eax
-    push ebx
-    push ecx
+%macro pushd 0
     push edx
+    push ecx
+    push ebx
+    push eax
 %endmacro
 
-%macro _popd 0
-    pop edx
-    pop ecx
-    pop ebx
+%macro popd 0
     pop eax
+    pop ebx
+    pop ecx
+    pop edx
 %endmacro
 
-%macro _print 2
-    _pushd
+%macro print 2
+    pushd
     mov edx, %1
     mov ecx, %2
     mov ebx, 1
     mov eax, 4
     int 0x80
-    _popd
+
+    popd
 %endmacro
 
-%macro _dprint 1
-    _pushd
+%macro dprint 1
+    pushd
     mov ecx, 10
     mov bx, 0 ; 2 Bytes MAX, Count Numbers
     mov eax, %1
@@ -44,14 +41,15 @@ global _start
     pop ax
     add ax, '0'
     mov [symbol], ax
-    _print 1, symbol
+    print 1, symbol
     dec bx
     cmp bx, 0
     jg %%_digit
-    _popd
+    
+    popd
 %endmacro
 
-%macro _calcX2 2
+%macro calcX2 2
     push ebx
     push ecx
     push edx
@@ -79,7 +77,7 @@ _start:
     mov ecx, 2
     div ecx ; Result in EAX, friction part in EDX
     mov [x1], eax
-    _calcX2 [num], eax
+    calcX2 [num], eax
     mov[x2], eax
     
 _while:
@@ -91,22 +89,22 @@ _while:
     
     mov eax, [x2]
     mov [x1], eax
-    _calcX2 [num], [x1]
+    calcX2 [num], [x1]
     mov[x2], eax
     jmp _while
     
 _end:    
-    _dprint [x2]
+    dprint [x2]
     
-    _print nl, n
-    _print len, message
-    _print nl, n
+    print nl, n
+    print len, message
+    print nl, n
     
     mov     eax, 1
     int     0x80
 
 section.data
-    num DD 81
+    num DD 121
     
     message DB "Done"
     len EQU $ - message
