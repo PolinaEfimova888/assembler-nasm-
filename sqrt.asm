@@ -1,3 +1,7 @@
+section .text
+
+global _start
+
 %macro _pushd 0
     push eax
     push ebx
@@ -90,19 +94,23 @@ _while:
     _calcX2 [num], [x1]
     mov[x2], eax
     jmp _while
+    
 _end:    
     _dprint [x2]
     
-    _print len, msg
+    _print nl, n
+    _print len, message
     _print nl, n
     
     mov     eax, 1
     int     0x80
 
 section.data
-    num DD 121
-    msg DB "Done"
-    len EQU $ - msg
+    num DD 81
+    
+    message DB "Done"
+    len EQU $ - message
+    
     n DB 0xA, 0xD
     nl EQU $ - n
     
