@@ -76,25 +76,25 @@ _start:
     mov eax, [num]
     mov ecx, 2
     div ecx ; Result in EAX, friction part in EDX
-    mov [x1], eax
+    mov [a], eax
     calcX2 [num], eax
-    mov[x2], eax
+    mov[b], eax
     
 _while:
-    mov eax, [x1]
-    mov ecx, [x2]
+    mov eax, [a]
+    mov ecx, [b]
     sub eax, ecx
     cmp eax, 1
     jl _end
     
-    mov eax, [x2]
-    mov [x1], eax
-    calcX2 [num], [x1]
-    mov[x2], eax
+    mov eax, [b]
+    mov [a], eax
+    calcX2 [num], [a]
+    mov[b], eax
     jmp _while
     
 _end:    
-    dprint [x2]
+    dprint [b]
     
     print nl, n
     print len, message
@@ -113,7 +113,6 @@ section.data
     nl EQU $ - n
     
 section .bss
-    x1 resd 1 ; Reserve DWORD (1 Count)
-    x2 resd 1
-    count resb 1 ; Reserve BYTE (1 Count)
+    a resd 1 ; Reserve DWORD (1 Count)
+    b resd 1
     symbol resb 1
