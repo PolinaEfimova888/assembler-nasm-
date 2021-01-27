@@ -83,7 +83,7 @@ _start:
     func [num], eax
     mov [b], eax
     
-_while:
+_loop:
     mov eax, [a]
     mov ecx, [b]
     sub eax, ecx 
@@ -94,7 +94,7 @@ _while:
     mov [a], eax
     func [num], [a]
     mov [b], eax
-    jmp _while
+    jmp _loop
     
 _end:    
     dprint [b]
